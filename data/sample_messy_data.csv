@@ -1,0 +1,11 @@
+employee_id,first_name,last_name,department,salary,email
+101,John ,Doe,Engineering,85000,john.doe@nexflow.ai
+102,Jane,Smith,Marketing,72000,jane.smith@nexflow.ai
+
+103,  Bruce  ,Wayne,Security,95000,bruce.wayne@nexflow.ai
+101,John ,Doe,Engineering,85000,john.doe@nexflow.ai
+104,Diana,Prince,HR,,diana.prince@nexflow.ai
+
+105,Clark,Kent,,65000,clark.kent@nexflow.ai
+102,Jane,Smith,Marketing,72000,jane.smith@nexflow.ai
+106,  Arthur  ,Curry  ,Operations,70000,arthur.curry@nexflow.ai

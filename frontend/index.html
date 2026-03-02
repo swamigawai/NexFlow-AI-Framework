@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexFlow - AI Operations</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="markdown.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div class="background-lines"></div>
+
+    <!-- Auth / Sign In Screen -->
+    <div id="auth-screen" class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo-icon-large"><i class="fas fa-layer-group"></i></div>
+                <h2>Welcome to NexFlow</h2>
+                <p>Sign in to access your AI and Data pipelines.</p>
+            </div>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Work Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="name@company.com" required value="demo@nexflow.ai">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="••••••••" required value="password123">
+                    </div>
+                </div>
+                <div class="auth-options">
+                    <label class="remember-me"><input type="checkbox" checked> Remember me</label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+                <button type="submit" class="primary-btn btn-block" id="login-btn">
+                    <span>Sign In</span>
+                    <div class="spinner-small hidden" id="login-spinner"></div>
+                </button>
+            </form>
+            <div class="auth-footer">
+                Don't have an account? <a href="#">Request access</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Screen -->
+    <div id="app-screen" class="app-wrapper hidden">
+        <div class="app-window">
+
+            <!-- Sidebar -->
+            <aside class="app-sidebar">
+                <div class="sidebar-logo">
+                    <div class="logo-icon"><i class="fas fa-layer-group"></i></div>
+                    NexFlow
+                </div>
+
+                <div class="sidebar-nav">
+                    <div class="nav-label">WORKSPACE</div>
+                    <button class="menu-btn active" onclick="switchTab('chat')">
+                        <i class="fas fa-comment-dots"></i> Agent Chat
+                    </button>
+                    <button class="menu-btn" onclick="switchTab('csv')">
+                        <i class="fas fa-database"></i> Data Upload
+                    </button>
+                    <button class="menu-btn" onclick="switchTab('knowledge')">
+                        <i class="fas fa-book"></i> Knowledge Base
+                    </button>
+                    <button class="menu-btn" onclick="switchTab('profile')">
+                        <i class="fas fa-user-circle"></i> Profile Setting
+                    </button>
+                </div>
+
+                <div class="sidebar-footer">
+                    <button class="logout-btn" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Sign Out
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="app-main">
+                <!-- Top Header -->
+                <header class="app-header">
+                    <div class="header-title">
+                        <h2 id="current-page-title">Agent Chat</h2>
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn"><i class="fas fa-bell"></i></button>
+                        <div class="user-pill" onclick="switchTab('profile')">
+                            <img src="https://ui-avatars.com/api/?name=Demo+User&background=6558F5&color=fff" alt="User"
+                                id="nav-avatar">
+                            <span id="nav-user-name">Demo User</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="app-content">
+
+                    <!-- Chat / Briefing Tool -->
+                    <div id="chat" class="tab-pane active-pane">
+                        <div class="two-col-layout">
+                            <!-- Chat Interface -->
+                            <div class="panel chat-panel">
+                                <div class="panel-head">
+                                    <h3><i class="fas fa-robot"></i> AI Support Assistant</h3>
+                                    <span class="badge online">Online</span>
+                                </div>
+                                <div class="chat-history" id="chat-history">
+                                    <div class="chat-bubble ai">Welcome back! I'm your Level 1 AI assistant. Type a
+                                        message, or simulate frustration to trigger a human handoff.</div>
+                                </div>
+                                <div class="chat-input-area">
+                                    <input type="text" id="chat-input" placeholder="Type a message..."
+                                        onkeypress="handleKey(event)">
+                                    <button onclick="sendMessage()" class="send-btn"><i
+                                            class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Case Brief Dashboard -->
+                            <div class="panel brief-panel">
+                                <div class="panel-head alert-mode">
+                                    <h3>🚨 Human Handoff Brief</h3>
+                                    <span class="status-marker hidden" id="brief-status">Pending</span>
+                                </div>
+
+                                <!-- Empty State -->
+                                <div class="empty-state" id="brief-empty">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <p>Monitoring conversation for escalation triggers.</p>
+                                </div>
+
+                                <!-- Loading State -->
+                                <div class="loading-state hidden" id="brief-loader">
+                                    <div class="smooth-spinner"></div>
+                                    <p>LLaMA 3.2 is synthesizing case context...</p>
+                                </div>
+
+                                <!-- Result State -->
+                                <div class="brief-data hidden" id="brief-data">
+                                    <div class="data-block">
+                                        <span class="label">Identified Intent</span>
+                                        <div class="highlight-box gray-box">
+                                            <p class="val" id="out-intent" style="font-size: 1.1rem; color: #111;">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="data-block">
+                                        <span class="label">Primary Blocker</span>
+                                        <div class="highlight-box red-box">
+                                            <p class="val" id="out-blocker">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CSV Upload Tool -->
+                    <div id="csv" class="tab-pane">
+                        <div class="panel full-panel">
+                            <div class="panel-head">
+                                <div>
+                                    <h3><i class="fas fa-database"></i> Data Processing Pipeline</h3>
+                                    <p class="subtitle">Upload messy CSV files for automated cleaning and deduplication.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="upload-container">
+                                <input type="file" id="csv-file" accept=".csv" class="hidden">
+                                <label for="csv-file" class="upload-area">
+                                    <div class="icon-pulse"><i class="fas fa-cloud-upload-alt"></i></div>
+                                    <h4>Click or Drag CSV Document Here</h4>
+                                    <span id="file-name">Supports .csv (max 50MB)</span>
+                                </label>
+                            </div>
+
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Remove Empty Rows</h4>
+                                        <p>Drops rows containing null or empty values.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" value="clean" checked class="csv-op">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Deduplication</h4>
+                                        <p>Removes exact duplicate rows from dataset.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" value="deduplicate" checked class="csv-op">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Trim Whitespace</h4>
+                                        <p>Removes leading/trailing spaces from strings.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" value="trim_strings" class="csv-op">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="actions-row">
+                                <button class="primary-btn execute-btn" onclick="processCSV()">
+                                    <i class="fas fa-play"></i> Execute Pipeline
+                                </button>
+                            </div>
+
+                            <div id="csv-result" class="result-box hidden"></div>
+                        </div>
+                    </div>
+
+                    <!-- RAG Knowledge Base Tool -->
+                    <div id="knowledge" class="tab-pane">
+                        <div class="panel full-panel">
+                            <div class="panel-head">
+                                <div>
+                                    <h3><i class="fas fa-book"></i> RAG Vector Database</h3>
+                                    <p class="subtitle">Upload PDFs or Text files to train LLaMA 3.2 on your custom
+                                        knowledge.</p>
+                                </div>
+                            </div>
+
+                            <div class="upload-container">
+                                <input type="file" id="rag-file" accept=".pdf,.txt" class="hidden">
+                                <label for="rag-file" class="upload-area" id="rag-upload-area">
+                                    <div class="icon-pulse"><i class="fas fa-brain"></i></div>
+                                    <h4>Click or Drag Context File Here</h4>
+                                    <span id="rag-file-name">Supports .pdf, .txt</span>
+                                </label>
+                            </div>
+
+                            <div class="actions-row">
+                                <button class="primary-btn execute-btn" onclick="processRAG()" id="rag-btn">
+                                    <i class="fas fa-project-diagram"></i> Vectorize Data
+                                </button>
+                            </div>
+
+                            <div id="rag-result" class="result-box hidden"></div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Section -->
+                    <div id="profile" class="tab-pane">
+                        <div class="panel profile-panel">
+                            <div class="profile-header">
+                                <div class="profile-cover"></div>
+                                <div class="profile-avatar">
+                                    <img src="https://ui-avatars.com/api/?name=Demo+User&background=6558F5&color=fff"
+                                        alt="User Avatar" id="main-avatar">
+                                    <button class="edit-avatar-btn"><i class="fas fa-camera"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="profile-body">
+                                <form id="profile-form" onsubmit="saveProfile(event)">
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>Full Name</label>
+                                            <input type="text" id="prof-name" value="Demo User">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>Role</label>
+                                            <input type="text" value="System Administrator" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="input-group">
+                                            <label>Email Address</label>
+                                            <input type="email" id="prof-email" value="demo@nexflow.ai">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>Phone Number</label>
+                                            <input type="tel" value="+1 (555) 000-0000">
+                                        </div>
+                                    </div>
+
+                                    <hr class="divider">
+
+                                    <div class="profile-settings">
+                                        <h4>Notifications</h4>
+                                        <div class="setting-item">
+                                            <span class="setting-label">Email Alerts for AI Handoffs</span>
+                                            <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-item">
+                                            <span class="setting-label">Weekly Pipeline Reports</span>
+                                            <label class="switch">
+                                                <input type="checkbox">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="actions-row right-align">
+                                        <button type="submit" class="primary-btn">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Hacker Console Terminal -->
+                <div class="terminal-panel" id="sys-terminal">
+                    <div class="term-header">
+                        <span><i class="fas fa-terminal"></i> Backend Server Logs (FastAPI)</span>
+                        <div class="term-actions">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                    <div class="term-body" id="term-logs">
+                        > SYSTEM BOOT: LangGraph Initialized.
+                        > WAITING FOR INCOMING REQUESTS...
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+NEXFLOW CORPORATE POLICIES - 2026
+
+1. SECURITY PROCEDURES:
+In the event of a total system failure or suspected cybersecurity breach, all administrators must immediately initiate the "Protocol Zero" lockdown sequence. The emergency override password to shut down the mainframe servers is: "CrimsonJupiter99". Do not share this password with Level 1 support staff.
+
+2. RETURN & REFUND POLICY:
+We offer a strict 14-day return window for all Enterprise software licenses. If a customer demands a refund after 14 days, the AI agent must deny the request. However, if the customer escalates to a human manager, the manager is authorized to grant a 30-day exceptional refund for retention purposes.
+
+3. OFFICE HOURS:
+The NexFlow physical support office located in Austin, Texas operates from 8:00 AM CST to 4:30 PM CST, Monday through Thursday. The office is completely closed on Fridays to support our 4-day work week initiative. The remote AI support line is available 24/7.

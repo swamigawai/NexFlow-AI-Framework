@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+data/chroma_db/
+data/rag_input/
+data/input/
+data/output/
+.gemini/
+artifacts/

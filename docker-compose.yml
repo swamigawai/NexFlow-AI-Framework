@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  sbtd-agent:
+    build: .
+    volumes:
+      - .:/app
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - ENV=production
+    restart: unless-stopped

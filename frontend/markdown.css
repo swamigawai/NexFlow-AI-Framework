@@ -1,0 +1,29 @@
+.chat-bubble.ai p {
+    margin-bottom: 10px;
+}
+
+.chat-bubble.ai p:last-child {
+    margin-bottom: 0;
+}
+
+.chat-bubble.ai ul,
+.chat-bubble.ai ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.chat-bubble.ai li {
+    margin-bottom: 5px;
+}
+
+.chat-bubble.ai strong {
+    font-weight: 700;
+    color: var(--acc-purple);
+}
+
+.chat-bubble.ai code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+}
