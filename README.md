@@ -2,6 +2,8 @@
 
 **An Enterprise-Grade Agentic Architecture Deployment**
 
+![NexFlow Demo Video](assets/nexflow_demo.webp)
+
 ## 1. Project Overview
 NexFlow is a comprehensive AI operations framework designed to demonstrate advanced, enterprise-grade architecture. Moving beyond simple API wrapper applications, this project orchestrates a multi-agent system utilizing **LangGraph** and runs entirely on local, open-source neural networks (**LLaMA 3.2 via Ollama**). It showcases a clean separation of concerns: deploying one AI loop for natural language user interaction (RAG Q&A) and a strictly deterministic AI pathway for structured data extraction (Pydantic schema validation).
 
