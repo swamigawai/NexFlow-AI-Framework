@@ -1,11 +1,17 @@
-requests==2.31.0
-beautifulsoup4==4.12.2
-python-dotenv==1.0.0
-pytest==7.4.3
-pytest-cov==4.1.0
-pydantic>=2.5.2
-lxml==4.9.3
-langgraph>=0.0.26
-langchain>=0.1.12
-langchain-core>=0.1.32
-langchain-openai>=0.0.8
+# Core Dependencies
+fastapi
+uvicorn[standard]
+pydantic
+pandas
+python-multipart
+
+# AI and Machine Learning
+langchain-core
+langchain-ollama
+langchain-community
+langchain-huggingface
+langchain-chroma
+langgraph
+sentence-transformers
+chromadb
+pypdf
